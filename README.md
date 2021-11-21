@@ -2,7 +2,8 @@
 
 Proyecto para el curso de desarrollo movil en Flutter.
 ### Objetivo
-Crear una aplicacion movil que obtenga articulos de una API, para listarlos y tener las opciones de guardarlos para leer, o en su caso marcar como leidos.
+Crear una aplicación móvil que obtenga artículos de una API, para listarlos y tener las opciones de guardarlos para leer, o en su caso marcar como leídos.
+
 ## Primer dia
 
 - Obtener la informacion de articulos de la API(http://export.arxiv.org/api/)
