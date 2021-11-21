@@ -1,6 +1,17 @@
-# semana_de_la_mecatronica
+# Semana de la mecatronica :robot:
 
-A new Flutter project.
+Proyecto para el curso de desarrollo movil en Flutter.
+### Objetivo
+Crear una aplicacion movil que obtenga articulos de una API, para listarlos y tener las opciones de guardarlos para leer, o en su caso marcar como leidos.
+## Primer dia
+
+- Obtener la informacion de articulos de la API(http://export.arxiv.org/api/)
+- Crear el modelo del Articulo
+- Crear el card donde se mostrara la informacion del articulo
+- Crear la lista de los articulos
+### Resultado esperado
+![image](https://user-images.githubusercontent.com/36217766/142744697-b6405770-d22f-4e5b-b5dd-fcaff0d004ab.png)
+
 
 ## Getting Started
 
