@@ -26,6 +26,8 @@ git clone https://github.com/Wolfteinter/Semana-de-la-mecatronica.git
 ```
 flutter pub get
 ```
+## APK
+https://drive.google.com/file/d/11TvKUTbuWhq_zXIDddpOFPZPVhUzVdY6/view?usp=sharing
 
 
 
