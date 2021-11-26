@@ -24,13 +24,12 @@ class Article {
     var published = xmlElement.getElement('published');
     var title = xmlElement.getElement('title');
     var summary = xmlElement.getElement('summary');
-    var href = xmlElement.getElement('href');
-
+    var href = xmlElement.findAllElements('link').toList()[1];
     return Article(
         published != null ? published.children.first.toString() : "",
         title != null ? title.children.first.toString() : "",
         summary != null ? summary.children.first.toString() : "",
         authors,
-        href != null ? href.children.first.toString() : "");
+        href != null ? href.getAttribute("href").toString() + ".pdf" : "");
   }
 }

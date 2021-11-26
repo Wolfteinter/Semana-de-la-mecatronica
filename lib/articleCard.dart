@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'article.dart';
+import 'cardDetail.dart';
 
 class ArticleCard extends StatefulWidget {
   final Article article;
-  const ArticleCard(this.article, {Key? key}) : super(key: key);
+  final Function addArticle;
+  const ArticleCard(this.article, this.addArticle, {Key? key})
+      : super(key: key);
 
   @override
   _ArticleCardState createState() => _ArticleCardState();
@@ -32,8 +35,18 @@ class _ArticleCardState extends State<ArticleCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              TextButton(onPressed: () => {}, child: Text('Ver')),
-              TextButton(onPressed: () => {}, child: Text('Añadir'))
+              TextButton(
+                  onPressed: () => {
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => CardDetail(widget.article))
+                      },
+                  child: Text('Ver')),
+              TextButton(
+                  onPressed: () => {widget.addArticle(widget.article)},
+                  child: Text('Añadir'))
             ],
           )
         ],

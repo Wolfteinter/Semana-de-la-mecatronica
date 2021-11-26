@@ -10,6 +10,10 @@ import 'package:http/http.dart' as http;
 */
 import 'package:xml/xml.dart';
 import 'article.dart';
+import 'package:flutter/services.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 
 class Utils {
   /*
@@ -38,5 +42,67 @@ class Utils {
     } else {
       return [];
     }
+  }
+
+  static Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path + "/data.json'";
+  }
+
+  static Future<File> get _localFile async {
+    final path = await _localPath;
+    return File(path);
+  }
+
+  static void updateFileFromList(List<Article> list) async {
+    File file = await _localFile;
+    var body = {};
+    body["articles"] = [];
+    list.forEach((element) {
+      var authors = [];
+      element.author.forEach((a) {
+        authors.add(a);
+      });
+      body["articles"].add({
+        "title": element.title,
+        "summary": element.summary,
+        "published": element.published,
+        "author": authors,
+        "href": element.href
+      });
+    });
+    String encode = json.encode(body);
+    file.writeAsString(encode);
+  }
+
+  static Future<List<Article>> getListOfWords() async {
+    File file = await _localFile;
+    if (file.existsSync() == false) {
+      //If aren't exist the file, create a new one and append a default word
+      new File(file.path).create(recursive: true);
+      var body = {};
+      body["articles"] = [];
+      //it is necessary to add try catches
+      String encoded = json.encode(body);
+      file.writeAsString(encoded);
+      return [];
+    }
+    String rawData = await file.readAsString();
+    var data = json.decode(rawData);
+    List articles = data["articles"];
+    if (articles.isEmpty) return [];
+    log(articles[0]["title"]);
+    List<Article> result = [];
+    articles.forEach((element) {
+      List author = element["author"];
+      result.add(Article(
+          element["title"],
+          element["summary"],
+          element["published"],
+          author.map((e) => e.toString()).toList(),
+          element["href"]));
+    });
+    inspect(result);
+    return result;
   }
 }
