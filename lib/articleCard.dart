@@ -7,8 +7,9 @@ import 'cardDetail.dart';
 
 class ArticleCard extends StatefulWidget {
   final Article article;
-  final Function addArticle;
-  const ArticleCard(this.article, this.addArticle, {Key? key})
+  final Function function;
+  final String functionName;
+  const ArticleCard(this.article, this.functionName, this.function, {Key? key})
       : super(key: key);
 
   @override
@@ -45,8 +46,8 @@ class _ArticleCardState extends State<ArticleCard> {
                       },
                   child: Text('Ver')),
               TextButton(
-                  onPressed: () => {widget.addArticle(widget.article)},
-                  child: Text('Añadir'))
+                  onPressed: () => {widget.function(widget.article)},
+                  child: Text(widget.functionName))
             ],
           )
         ],

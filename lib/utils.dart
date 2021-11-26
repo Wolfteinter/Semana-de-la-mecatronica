@@ -54,16 +54,31 @@ class Utils {
     return File(path);
   }
 
-  static void updateFileFromList(List<Article> list) async {
+  static void updateFileFromList(
+      List<Article> savedArticles, readArticles) async {
     File file = await _localFile;
     var body = {};
-    body["articles"] = [];
-    list.forEach((element) {
+    body["saved_articles"] = [];
+    body["read_articles"] = [];
+    savedArticles.forEach((element) {
       var authors = [];
       element.author.forEach((a) {
         authors.add(a);
       });
-      body["articles"].add({
+      body["saved_articles"].add({
+        "title": element.title,
+        "summary": element.summary,
+        "published": element.published,
+        "author": authors,
+        "href": element.href
+      });
+    });
+    readArticles.forEach((element) {
+      var authors = [];
+      element.author.forEach((a) {
+        authors.add(a);
+      });
+      body["read_articles"].add({
         "title": element.title,
         "summary": element.summary,
         "published": element.published,
@@ -75,34 +90,51 @@ class Utils {
     file.writeAsString(encode);
   }
 
-  static Future<List<Article>> getListOfWords() async {
+  static Future<Map> getListOfWords() async {
     File file = await _localFile;
     if (file.existsSync() == false) {
       //If aren't exist the file, create a new one and append a default word
       new File(file.path).create(recursive: true);
       var body = {};
-      body["articles"] = [];
+      body["saved_articles"] = [];
+      body["read_articles"] = [];
       //it is necessary to add try catches
       String encoded = json.encode(body);
       file.writeAsString(encoded);
-      return [];
+      return {"saved_articles": [], "read_articles": []};
     }
     String rawData = await file.readAsString();
     var data = json.decode(rawData);
-    List articles = data["articles"];
-    if (articles.isEmpty) return [];
-    log(articles[0]["title"]);
-    List<Article> result = [];
-    articles.forEach((element) {
-      List author = element["author"];
-      result.add(Article(
-          element["title"],
-          element["summary"],
-          element["published"],
-          author.map((e) => e.toString()).toList(),
-          element["href"]));
-    });
-    inspect(result);
-    return result;
+    List savedArticles = data["saved_articles"];
+    List readArticles = data["read_articles"];
+    inspect(savedArticles);
+    List<Article> savedArticlesResult = [];
+    List<Article> readArticlesResult = [];
+    if (savedArticles.isNotEmpty) {
+      savedArticles.forEach((element) {
+        List author = element["author"];
+        savedArticlesResult.add(Article(
+            element["published"],
+            element["title"],
+            element["summary"],
+            author.map((e) => e.toString()).toList(),
+            element["href"]));
+      });
+    }
+    if (readArticles.isNotEmpty) {
+      readArticles.forEach((element) {
+        List author = element["author"];
+        readArticlesResult.add(Article(
+            element["published"],
+            element["title"],
+            element["summary"],
+            author.map((e) => e.toString()).toList(),
+            element["href"]));
+      });
+    }
+    return {
+      "saved_articles": savedArticlesResult,
+      "read_articles": readArticlesResult
+    };
   }
 }
